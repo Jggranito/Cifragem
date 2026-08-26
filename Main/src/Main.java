@@ -40,25 +40,27 @@ public class Main {
             }
             return s.toString();
         } catch (Exception e) {
-            System.out.println("Erro ao ler o arquivo");
+            System.out.println("Erro ao processar o texto");
         }
         return frase;
     }
 
-    public static void main(String[] args) {
-        // 1. Executa a leitura e inversão do arquivo
-        List<String> linhasInvertidas = inverterTexto();
-
-        System.out.println("\n--- Lendo a lista retornada no main ---");
-        for (String line : linhasInvertidas) {
-            System.out.println(line);
+    public static List<String> cifrarLista(List<String> listaOriginal, int deslocamento) {
+        List<String> listaCifrada = new ArrayList<>();
+        for (String linha : listaOriginal) {
+            listaCifrada.add(cifraCesar(linha, deslocamento));
         }
+        return listaCifrada;
+    }
 
-        // 2. Demonstração opcional da Cifra de César
-        System.out.println("\n--- Teste da Cifra de César ---");
-        String original = "Exemplo Java 2026";
-        String cifrado = cifraCesar(original, 3);
-        System.out.println("Original: " + original);
-        System.out.println("Cifrado:  " + cifrado);
+    public static void main(String[] args) {
+        List<String> linhasInvertidas = inverterTexto();
+        int deslocamento = 3; // Configuração para escolha
+        List<String> linhasCifradas = cifrarLista(linhasInvertidas, deslocamento);
+
+        System.out.println("--- Exibindo lista cifrada através do método único ---");
+        for (String linha : linhasCifradas) {
+            System.out.println(linha);
+        }
     }
 }
