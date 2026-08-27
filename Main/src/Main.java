@@ -12,13 +12,9 @@ public class Main {
 
     // Mensagem Invertida: Rafael Alves
     public static List<String> inverterTexto() {
-        List<String> fraseInvertida = new ArrayList<>();
-        try {
-            Path path = Path.of("C:/teste.txt");
-            List<String> lines = Files.readAllLines(path);
-            for (String line : lines) {
-                StringBuilder textoInvertido = new StringBuilder(line).reverse();
-                fraseInvertida.add(textoInvertido.toString());
+        public static String inverterTexto(String frase) {
+            return new StringBuilder(frase).reverse().toString();
+        }
             }
 
         } catch (Exception e) {
@@ -87,7 +83,7 @@ public class Main {
 
         // Estrutura condicional para rodar apenas o método escolhido
         if (choice == 1) {
-            resultado = new StringBuilder(fraseOriginal).reverse().toString();
+            resultado = inverterTexto(fraseOriginal);
             sufixo = "-frase_invertida.txt";
         } else if (choice == 2) {
             System.out.println("Digite em inteiro a configuração para a Cifra (0 a 27): ");
