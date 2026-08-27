@@ -55,11 +55,11 @@ public class Main {
         return cifraCesar(frase, mascara);  // Reutiliza a lógica de substituição
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         // Recebe o caminho do arquivo interativamente
-        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:/teste.txt):");
+        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:Cifragem\\Main\\src\\teste.txt):");
         String caminhoString = sc.nextLine();
 
         File nomeArquivo = new File(caminhoString);
@@ -75,10 +75,11 @@ public class Main {
             return;
         }
 
-        System.out.println("Escolha o tipo de criptografia: \n" +
-                "1. Mensagem Invertida \n" +
-                "2. Cifra de César \n" +
-                "3. Método de Substituição (Máscara Aleatória)");
+        System.out.println("""
+                Escolha o tipo de criptografia:\s
+                1. Mensagem Invertida\s
+                2. Cifra de César\s
+                3. Método de Substituição (Máscara Aleatória)""");
         int choice = sc.nextInt();
 
         String resultado = "";

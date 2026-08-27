@@ -1,10 +1,9 @@
-package trabalhoSegurancaDaInforamcao;
+package teste;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Random;
 
 public class teste {
 	public static void main(String[] args) {
