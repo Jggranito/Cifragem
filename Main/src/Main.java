@@ -3,28 +3,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
 
     // Mensagem Invertida: Rafael Alves
-    public static List<String> inverterTexto() {
-        public static String inverterTexto(String frase) {
-            return new StringBuilder(frase).reverse().toString();
-        }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Erro ao ler o arquivo");
-        }
-        return fraseInvertida;
+    public static String inverterTexto(String frase) {
+        if (frase == null) return "";
+        return new StringBuilder(frase).reverse().toString();
     }
+
     // Cifra de César: João Gabriel
     public static String cifraCesar(String frase, int deslocamento) {
         try {
+            deslocamento = ((deslocamento % 26) + 26) % 26;
+
             StringBuilder s = new StringBuilder();
             for (int i = 0; i < frase.length(); i++) {
                 char c = frase.charAt(i);
@@ -41,21 +35,21 @@ public class Main {
             return s.toString();
         } catch (Exception e) {
             System.out.println("Erro ao processar o texto");
+            return frase;
         }
-        return frase;
     }
 
     public static String mascaraAleatoria(String frase) {
         Random rand = new Random();
-        int mascara = rand.nextInt(26) + 1; // Gera um número aleatório para a máscara
-        return cifraCesar(frase, mascara);  // Reutiliza a lógica de substituição
+        int mascara = rand.nextInt(25) + 1;
+        return cifraCesar(frase, mascara);
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         // Recebe o caminho do arquivo interativamente
-        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:Cifragem\\Main\\src\\teste.txt):");
+        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:\\Users\\rafael.pferreira\\cifra\\Cifragem\\Main\\src\\teste.txt):");
         String caminhoString = sc.nextLine();
 
         File nomeArquivo = new File(caminhoString);
@@ -86,7 +80,7 @@ public class Main {
             resultado = inverterTexto(fraseOriginal);
             sufixo = "-frase_invertida.txt";
         } else if (choice == 2) {
-            System.out.println("Digite em inteiro a configuração para a Cifra (0 a 27): ");
+            System.out.println("Digite em inteiro a configuração para a Cifra (0 a 25): ");
             int deslocamento = sc.nextInt();
             resultado = cifraCesar(fraseOriginal, deslocamento);
             sufixo = "-cifra_cesar.txt";
@@ -103,15 +97,23 @@ public class Main {
         System.out.println("\n--- Resultado da Cifragem ---");
         System.out.println(resultado);
 
-        // Salvando um único arquivo com base na escolha do usuário
+        // Salvando o arquivo no mesmo diretório do arquivo original lido
         try {
-            FileWriter arquivoCriptografado = new FileWriter(nomeBase + sufixo);
-            arquivoCriptografado.write(resultado);
-            arquivoCriptografado.close();
-            System.out.println("\nArquivo salvo com sucesso com o nome: " + nomeBase + sufixo);
+            // Pega o caminho da pasta onde o arquivo original está
+            String diretorio = nomeArquivo.getParent();
+
+            // Monta o caminho completo do novo arquivo
+            File arquivoDestino = new File(diretorio, nomeBase + sufixo);
+
+            // Usando a boa prática do try-with-resources
+            try (FileWriter arquivoCriptografado = new FileWriter(arquivoDestino)) {
+                arquivoCriptografado.write(resultado);
+                System.out.println("\nArquivo salvo com sucesso em: " + arquivoDestino.getAbsolutePath());
+            }
         } catch (IOException e) {
-            System.out.println("Erro ao salvar o arquivo.");
+            System.out.println("Erro ao salvar o arquivo: " + e.getMessage());
         }
+
         sc.close();
     }
 }
