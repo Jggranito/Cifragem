@@ -69,7 +69,8 @@ public class Main {
                 Escolha o tipo de criptografia:\s
                 1. Mensagem Invertida\s
                 2. Cifra de César\s
-                3. Método de Substituição (Máscara Aleatória)""");
+                3. Método de Substituição (Máscara Aleatória)\s
+                4. Mensagem Invertida (Descriptografia)""");
         int choice = sc.nextInt();
 
         String resultado = "";
@@ -87,6 +88,9 @@ public class Main {
         } else if (choice == 3) {
             resultado = mascaraAleatoria(fraseOriginal);
             sufixo = "-mascara_aleatoria.txt";
+        } else if (choice == 4) {
+            resultado = inverterTexto(fraseOriginal);
+            sufixo = "-descriptografada.txt";
         } else {
             System.out.println("Opção inválida.");
             sc.close();
