@@ -15,8 +15,12 @@ public class Main {
     }
 
     // Cifra de César: João Gabriel
-    public static String cifraCesar(String frase, int deslocamento) {
+    public static String cifraCesar(String frase, int deslocamento, boolean descriptografar) {
         try {
+            // Método 5.
+            if (descriptografar) {
+                deslocamento = -deslocamento;
+            }
             deslocamento = ((deslocamento % 26) + 26) % 26;
 
             StringBuilder s = new StringBuilder();
@@ -40,9 +44,10 @@ public class Main {
     }
 
     public static String mascaraAleatoria(String frase) {
+        boolean descriptografar = false;
         Random rand = new Random();
         int mascara = rand.nextInt(25) + 1;
-        return cifraCesar(frase, mascara);
+        return cifraCesar(frase, mascara, descriptografar);
     }
 
     public static void main(String[] args) {
@@ -57,6 +62,7 @@ public class Main {
         String nomeBase = (arquivoExt == -1) ? nomeArquivo.getName() : nomeArquivo.getName().substring(0, arquivoExt);
 
         String fraseOriginal = "";
+        boolean descriptografar = false;
         try {
             fraseOriginal = Files.readString(Path.of(caminhoString));
         } catch (Exception e) {
@@ -70,7 +76,8 @@ public class Main {
                 1. Mensagem Invertida\s
                 2. Cifra de César\s
                 3. Método de Substituição (Máscara Aleatória)\s
-                4. Mensagem Invertida (Descriptografia)""");
+                4. Mensagem Invertida (Descriptografia)\s
+                5. Cifra de César (Descriptografia)\s""");
         int choice = sc.nextInt();
 
         String resultado = "";
@@ -83,13 +90,19 @@ public class Main {
         } else if (choice == 2) {
             System.out.println("Digite em inteiro a configuração para a Cifra (0 a 25): ");
             int deslocamento = sc.nextInt();
-            resultado = cifraCesar(fraseOriginal, deslocamento);
+            resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
             sufixo = "-cifra_cesar.txt";
         } else if (choice == 3) {
             resultado = mascaraAleatoria(fraseOriginal);
             sufixo = "-mascara_aleatoria.txt";
         } else if (choice == 4) {
             resultado = inverterTexto(fraseOriginal);
+            sufixo = "-descriptografada.txt";
+        } else if (choice == 5) {
+            descriptografar = true;
+            System.out.println("Digite a mesma configuração para a Cifra (0 a 25): ");
+            int deslocamento = sc.nextInt();
+            resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
             sufixo = "-descriptografada.txt";
         } else {
             System.out.println("Opção inválida.");
