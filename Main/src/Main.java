@@ -43,11 +43,9 @@ public class Main {
         }
     }
 
-    public static String mascaraAleatoria(String frase) {
-        boolean descriptografar = false;
-        Random rand = new Random();
-        int mascara = rand.nextInt(25) + 1;
-        return cifraCesar(frase, mascara, descriptografar);
+    public static String mascaraAleatoria(String frase, boolean descriptografar) {
+    	int simulaMascaraAleatoria = 354654648;
+        return cifraCesar(frase, simulaMascaraAleatoria, descriptografar);
     }
 
     public static void main(String[] args) {
@@ -77,7 +75,8 @@ public class Main {
                 2. Cifra de César\s
                 3. Método de Substituição (Máscara Aleatória)\s
                 4. Mensagem Invertida (Descriptografia)\s
-                5. Cifra de César (Descriptografia)\s""");
+                5. Cifra de César (Descriptografia)\s
+                6. Método de Substituição (Máscara Aleatória) (Descriptografia)\s""");
         int choice = sc.nextInt();
 
         String resultado = "";
@@ -93,7 +92,7 @@ public class Main {
             resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
             sufixo = "-cifra_cesar.txt";
         } else if (choice == 3) {
-            resultado = mascaraAleatoria(fraseOriginal);
+            resultado = mascaraAleatoria(fraseOriginal, descriptografar);
             sufixo = "-mascara_aleatoria.txt";
         } else if (choice == 4) {
             resultado = inverterTexto(fraseOriginal);
@@ -104,7 +103,12 @@ public class Main {
             int deslocamento = sc.nextInt();
             resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
             sufixo = "-descriptografada.txt";
-        } else {
+        }
+        else if (choice == 6) {
+        	descriptografar = true;
+        	resultado = mascaraAleatoria(fraseOriginal, descriptografar);
+        	sufixo = "-descriptografada.txt";
+        }else {
             System.out.println("Opção inválida.");
             sc.close();
             return;
