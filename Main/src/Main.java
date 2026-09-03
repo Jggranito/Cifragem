@@ -15,9 +15,12 @@ public class Main {
     }
 
     // Cifra de César: João Gabriel
-    public static String cifraCesar(String frase, int deslocamento) {
+    public static String cifraCesar(String frase, int deslocamento, boolean descriptografar) {
         try {
-            deslocamento = ((deslocamento % 26) + 26) % 26;
+            // Método 5.
+            if (descriptografar) {
+                deslocamento = -deslocamento;
+            }
 
             StringBuilder s = new StringBuilder();
             for (int i = 0; i < frase.length(); i++) {
@@ -39,17 +42,16 @@ public class Main {
         }
     }
 
-    public static String mascaraAleatoria(String frase) {
-        Random rand = new Random();
-        int mascara = rand.nextInt(25) + 1;
-        return cifraCesar(frase, mascara); 
+    public static String mascaraAleatoria(String frase, boolean descriptografar) {
+    	int simulaMascaraAleatoria = 354654648;
+        return cifraCesar(frase, simulaMascaraAleatoria, descriptografar);
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         // Recebe o caminho do arquivo interativamente
-        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:\\\\Cifragem\\\\Main\\\\src\\\\teste.txt):");
+        System.out.println("Digite o caminho completo do arquivo .txt (ex: C:\\Users\\rafael.pferreira\\cifra\\Cifragem\\Main\\src\\teste.txt):");
         String caminhoString = sc.nextLine();
 
         File nomeArquivo = new File(caminhoString);
@@ -57,6 +59,7 @@ public class Main {
         String nomeBase = (arquivoExt == -1) ? nomeArquivo.getName() : nomeArquivo.getName().substring(0, arquivoExt);
 
         String fraseOriginal = "";
+        boolean descriptografar = false;
         try {
             fraseOriginal = Files.readString(Path.of(caminhoString));
         } catch (Exception e) {
@@ -69,7 +72,10 @@ public class Main {
                 Escolha o tipo de criptografia:\s
                 1. Mensagem Invertida\s
                 2. Cifra de César\s
-                3. Método de Substituição (Máscara Aleatória)""");
+                3. Método de Substituição (Máscara Aleatória)\s
+                4. Mensagem Invertida (Descriptografia)\s
+                5. Cifra de César (Descriptografia)\s
+                6. Método de Substituição (Máscara Aleatória) (Descriptografia)\s""");
         int choice = sc.nextInt();
 
         String resultado = "";
@@ -82,12 +88,26 @@ public class Main {
         } else if (choice == 2) {
             System.out.println("Digite em inteiro a configuração para a Cifra (0 a 25): ");
             int deslocamento = sc.nextInt();
-            resultado = cifraCesar(fraseOriginal, deslocamento);
+            resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
             sufixo = "-cifra_cesar.txt";
         } else if (choice == 3) {
-            resultado = mascaraAleatoria(fraseOriginal);
+            resultado = mascaraAleatoria(fraseOriginal, descriptografar);
             sufixo = "-mascara_aleatoria.txt";
-        } else {
+        } else if (choice == 4) {
+            resultado = inverterTexto(fraseOriginal);
+            sufixo = "-descriptografada.txt";
+        } else if (choice == 5) {
+            descriptografar = true;
+            System.out.println("Digite a mesma configuração para a Cifra (0 a 25): ");
+            int deslocamento = sc.nextInt();
+            resultado = cifraCesar(fraseOriginal, deslocamento, descriptografar);
+            sufixo = "-descriptografada.txt";
+        }
+        else if (choice == 6) {
+        	descriptografar = true;
+        	resultado = mascaraAleatoria(fraseOriginal, descriptografar);
+        	sufixo = "-descriptografada.txt";
+        }else {
             System.out.println("Opção inválida.");
             sc.close();
             return;
@@ -97,15 +117,23 @@ public class Main {
         System.out.println("\n--- Resultado da Cifragem ---");
         System.out.println(resultado);
 
-        // Salvando um único arquivo com base na escolha do usuário
+        // Salvando o arquivo no mesmo diretório do arquivo original lido
         try {
-            FileWriter arquivoCriptografado = new FileWriter(nomeBase + sufixo);
-            arquivoCriptografado.write(resultado);
-            arquivoCriptografado.close();
-            System.out.println("\nArquivo salvo com sucesso com o nome: " + nomeBase + sufixo);
+            // Pega o caminho da pasta onde o arquivo original está
+            String diretorio = nomeArquivo.getParent();
+
+            // Monta o caminho completo do novo arquivo
+            File arquivoDestino = new File(diretorio, nomeBase + sufixo);
+
+            // Usando a boa prática do try-with-resources
+            try (FileWriter arquivoCriptografado = new FileWriter(arquivoDestino)) {
+                arquivoCriptografado.write(resultado);
+                System.out.println("\nArquivo salvo com sucesso em: " + arquivoDestino.getAbsolutePath());
+            }
         } catch (IOException e) {
-            System.out.println("Erro ao salvar o arquivo.");
+            System.out.println("Erro ao salvar o arquivo: " + e.getMessage());
         }
+
         sc.close();
     }
 }
