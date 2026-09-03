@@ -21,7 +21,6 @@ public class Main {
             if (descriptografar) {
                 deslocamento = -deslocamento;
             }
-            deslocamento = ((deslocamento % 26) + 26) % 26;
 
             StringBuilder s = new StringBuilder();
             for (int i = 0; i < frase.length(); i++) {
