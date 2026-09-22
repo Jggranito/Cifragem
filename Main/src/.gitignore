@@ -1,0 +1,24 @@
+/Main.class
+
+# Arquivos de build e binários do Eclipse
+bin/
+target/
+.metadata/
+tmp/
+
+# Arquivos de configuração do Eclipse
+.classpath
+.project
+.settings/
+.loadpath
+.externalToolBuilders/
+*.launch
+*.pydevproject
+.factorypath
+.buildpath
+.target
+.springBeans
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
